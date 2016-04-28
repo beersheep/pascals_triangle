@@ -3,24 +3,27 @@ class Triangle
   def initialize(rows)
     @rows = []
     rows.times { @rows << [] }
-    populate_row(rows)
+    populate_row(0)
   end
 
-  def populate_row(rows)
-    nth_row = @rows.size - rows
-    if nth_row == 0
-      @rows[nth_row] << 1 if nth_row == 0
+  def populate_row(row)
+    if row == 0
+      @rows[row] << 1
     else
-      idx = 0
-      last_row = @rows[nth_row - 1]
-      while idx <= nth_row
-        last_number = last_row[idx].nil? ? 0 : last_row[idx]
-        @rows[nth_row] << last_row[idx - 1] + last_number
-        idx += 1
-      end
+      push_number_into(row)
     end
-    @rows[nth_row][0] = 1
-    next_row = rows - 1
-    populate_row(next_row) if next_row > 0
+    @rows[row][0] = 1
+    next_row = row + 1
+    populate_row(next_row) if next_row < @rows.size
+  end
+
+  def push_number_into(row)
+    idx = 0
+    prev_row = @rows[row - 1]
+    while idx <= row
+      last_number = prev_row[idx].nil? ? 0 : prev_row[idx]
+      @rows[row] << prev_row[idx - 1] + last_number
+      idx += 1
+    end
   end
 end
